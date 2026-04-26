@@ -55,7 +55,7 @@ numeric_col= X_train.select_dtypes(include=["number"]).columns
 categ_col= X_train.select_dtypes(include=['object', 'str']).columns
 
 
-#Build  preprocessing pipeline
+#Build preprocessing pipeline
 num_pipeline=Pipeline([
     ('scaler',StandardScaler()),
 ])
