@@ -16,21 +16,21 @@ X_train, X_test, y_train, y_test, preprocessor = get_data_and_preprocessor()
 models={
     "base_log_reg":Pipeline([
         ('prep',preprocessor),
-        ('clf',LogisticRegression())
+        ('model',LogisticRegression())
     ]),
     "Dec_tree":Pipeline([
         ('prep',preprocessor),
-        ('Dec_tre',DecisionTreeClassifier())
+        ('model',DecisionTreeClassifier())
 
     ]),
     "KNN":Pipeline([
         ('prep',preprocessor),
-        ('Dec_tre',KNeighborsClassifier())
+        ('model',KNeighborsClassifier())
 
     ]),
     "Gaussian_NB":Pipeline([
         ('prep',preprocessor),
-        ('Dec_tre',GaussianNB())
+        ('model',GaussianNB())
 
     ]),
 
@@ -77,3 +77,9 @@ result_df=result_df.sort_values('f1_score',ascending=False)
 
 print(result_df)
 print(f"\n🏆 Best Model : {best_name}")
+
+best_name=f'Trained_{best_name}.pkl'
+best_mod_dir= f'./models/{best_name}'
+
+joblib.dump(best_model["model"],best_mod_dir)
+print(f"\n✅ Best Model Saved as : {best_name} ")
