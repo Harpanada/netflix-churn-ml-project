@@ -1,8 +1,9 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
 from preprocessing import get_data_and_preprocessor
-from sklearn.metrics import classification_report,confusion_matrix,accuracy_score,precision_score,recall_score,f1_score
-from sklearn.model_selection import cross_val_score
+from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
 from sklearn.pipeline import Pipeline
 import pandas as pd
 import joblib
@@ -21,7 +22,18 @@ models={
         ('prep',preprocessor),
         ('Dec_tre',DecisionTreeClassifier())
 
-    ])
+    ]),
+    "KNN":Pipeline([
+        ('prep',preprocessor),
+        ('Dec_tre',KNeighborsClassifier())
+
+    ]),
+    "Gaussian_NB":Pipeline([
+        ('prep',preprocessor),
+        ('Dec_tre',GaussianNB())
+
+    ]),
+
 }
 
 #Train and test models
@@ -32,6 +44,7 @@ best_recl = 0
 best_f1= 0
 best_model = None
 best_name  = None
+
 for name,model in models.items():
     model.fit(X_train,y_train)
     y_pred=model.predict(X_test)
@@ -46,7 +59,9 @@ for name,model in models.items():
         'Accuration'  : accuration,
         'Precision'   : precision,
         'Recall'      : recall,
-        'f1_score'    :f1
+        'f1_score'    : f1,
+        'Score_Train' : model.score(X_train, y_train),
+        'Score_Test'  : model.score(X_test, y_test)
     })
 
     if accuration > best_acc or precision > best_prec or recall > best_recl or f1 > best_f1:
