@@ -81,5 +81,5 @@ print(f"\n🏆 Best Model : {best_name}")
 best_name=f'Trained_{best_name}.pkl'
 best_mod_dir= f'./models/{best_name}'
 
-joblib.dump(best_model["model"],best_mod_dir)
+joblib.dump(best_model,best_mod_dir)
 print(f"\n✅ Best Model Saved as : {best_name} ")
