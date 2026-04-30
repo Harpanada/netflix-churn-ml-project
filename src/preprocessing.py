@@ -3,6 +3,7 @@ from sklearn.preprocessing import OneHotEncoder,StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
 
 
 # ─────────────────────────────────
@@ -54,10 +55,12 @@ categ_col= X_train.select_dtypes(include=['object', 'str']).columns
 
 num_pipeline=Pipeline([
     ('scaler',StandardScaler()),
+    ('imputer', SimpleImputer(strategy= "median"))
 ])
 
 cat_pipeline=Pipeline([
     ('encoder',OneHotEncoder()),
+    ('imputer',SimpleImputer(strategy="most_frequent"))
 ])
 
 preprocessor=ColumnTransformer([
