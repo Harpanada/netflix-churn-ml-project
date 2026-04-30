@@ -4,22 +4,34 @@ from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
-#Loading Dirty Dataset
+
+# ─────────────────────────────────
+# LOADING DIRTY DATASET
+# ─────────────────────────────────
 df=pd.read_csv('data/raw/netflix_customer_churn.csv')
 
-#Separate label and features
+# ─────────────────────────────────
+# SEPARATE LABEL AND FEATURES
+# ─────────────────────────────────
 X= df.drop(columns='churned')
 y= df['churned']
 
-#Split data to test and train
+# ─────────────────────────────────
+# SPLIT DATA TO TRAIN SET AND TEST SET
+# ─────────────────────────────────
+
 X_train,X_test,y_train,y_test= train_test_split(X,y,test_size=0.2, random_state=42)
 
-#Drop unused columns
+# ─────────────────────────────────
+# DROP UNUSED COLUMN
+# ─────────────────────────────────
 drop_cols= ['customer_id']
 X_train=X_train.drop(columns=drop_cols)
 X_test=X_test.drop(columns=drop_cols)
 
-#Remove outliers 
+# ─────────────────────────────────
+# REMOVE OUTLIER
+# ─────────────────────────────────
 mask_train= X_train["avg_watch_time_per_day"] <= 24
 mask_test=  X_test["avg_watch_time_per_day"]  <= 24
 
@@ -29,12 +41,17 @@ y_train=y_train[mask_train]
 X_test=X_test[mask_test]
 y_test=y_test[mask_test]
 
-#Separate numeric and categorycal data
+# ─────────────────────────────────
+# SEPARATE NUMERIC AND CATEGORYCAL COLUMN
+# ─────────────────────────────────
 numeric_col= X_train.select_dtypes(include=["number"]).columns
 categ_col= X_train.select_dtypes(include=['object', 'str']).columns
 
 
-#Build preprocessing pipeline
+# ─────────────────────────────────
+# BUILD PREPROCESSING PIPELINE
+# ─────────────────────────────────
+
 num_pipeline=Pipeline([
     ('scaler',StandardScaler()),
 ])
@@ -48,6 +65,8 @@ preprocessor=ColumnTransformer([
     ('cat',cat_pipeline,categ_col )
 ])
 
-#Returns data and preprocessors so they can be accessed in other modules.
+# ─────────────────────────────────
+# RETURN CLEAN DATA AND PREPROCESSOR 
+# ─────────────────────────────────
 def get_data_and_preprocessor():
     return X_train,X_test,y_train,y_test,preprocessor
