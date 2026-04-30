@@ -8,11 +8,14 @@ from sklearn.pipeline import Pipeline
 import pandas as pd
 import joblib
 
-
-#Get data and preprocessor
+# ─────────────────────────────────
+# GET DATA AND PREPROCESSOR
+# ─────────────────────────────────
 X_train, X_test, y_train, y_test, preprocessor = get_data_and_preprocessor()
 
-#Build Models
+# ─────────────────────────────────
+# BUILD MODELS WITH PIPELINE 
+# ─────────────────────────────────
 models={
     "base_log_reg":Pipeline([
         ('prep',preprocessor),
@@ -36,7 +39,9 @@ models={
 
 }
 
-#Train and test models
+# ─────────────────────────────────
+# TRAIN AND TEST MODEL
+# ─────────────────────────────────
 result=[]
 best_acc  = 0
 best_prec   = 0  
@@ -46,14 +51,18 @@ best_model = None
 best_name  = None
 
 for name,model in models.items():
+    #TRAIN
     model.fit(X_train,y_train)
+    #TEST
     y_pred=model.predict(X_test)
 
+    #EVALUATION METRIC
     accuration= accuracy_score(y_test,y_pred)
     precision=  precision_score(y_test,y_pred)
     recall=     recall_score(y_test,y_pred)
     f1=         f1_score(y_test,y_pred)
 
+    #SAVE MODELS PERFORMANCE INFORMATION
     result.append({
         'Model'       : name,
         'Accuration'  : accuration,
@@ -64,6 +73,7 @@ for name,model in models.items():
         'Score_Test'  : model.score(X_test, y_test)
     })
 
+    #COMPARE MODELS WITH ONE ANOTHER TO CHOOSE THE BEST ONE
     if accuration > best_acc or precision > best_prec or recall > best_recl or f1 > best_f1:
         best_acc        = accuration
         best_prec       = precision
@@ -81,5 +91,8 @@ print(f"\n🏆 Best Model : {best_name}")
 best_name=f'Trained_{best_name}.pkl'
 best_mod_dir= f'./models/{best_name}'
 
+# ─────────────────────────────────
+# SAVE THE BEST MODEL
+# ─────────────────────────────────
 joblib.dump(best_model,best_mod_dir)
 print(f"\n✅ Best Model Saved as : {best_name} ")
