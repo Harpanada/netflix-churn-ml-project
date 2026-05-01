@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-zinc-950">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Churn Input</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['"DM Mono"', 'monospace'],
+            display: ['Syne', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'DM Mono', monospace; }
+    h1, .font-display { font-family: 'Syne', sans-serif; }
+    select { appearance: none; -webkit-appearance: none; }
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { display: none; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col items-center px-4 py-16">
+
+  <!-- BG grid overlay -->
+  <div class="fixed inset-0 bg-[linear-gradient(rgba(239,68,68,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(239,68,68,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
+
+  <div class="relative z-10 w-full max-w-2xl">
+
+    <!-- Header -->
+    <div class="mb-10">
+      <p class="text-xs tracking-widest uppercase text-red-500 mb-2">Churn Prediction</p>
+      <h1 style="font-family:'Syne',sans-serif;" class="text-4xl font-extrabold tracking-tight leading-tight">
+        Customer <span class="text-red-500">Data</span> Input
+      </h1>
+      <p class="mt-2 text-sm text-zinc-500 leading-relaxed">
+        Enter customer attributes below. All fields map directly to the dataset schema.
+      </p>
+    </div>
+
+    <form id="churnForm" class="space-y-8">
+
+      <!-- Section: Identity -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-xs tracking-widest uppercase text-zinc-500">Identity</span>
+          <div class="flex-1 h-px bg-zinc-800"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2 flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="customer_id">Customer ID</label>
+            <input type="text" id="customer_id" name="customer_id"
+              placeholder="e.g. a9b75100-82a8-427a-..."
+              class="bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-red-500 transition-colors" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="age">Age</label>
+            <input type="number" id="age" name="age" min="18" max="70" placeholder="18 – 70" required
+              class="bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-red-500 transition-colors" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="gender">Gender</label>
+            <div class="relative">
+              <select id="gender" name="gender" required
+                class="w-full bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 outline-none focus:border-red-500 transition-colors cursor-pointer">
+                <option value="" disabled selected>Select...</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+              <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Subscription -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-xs tracking-widest uppercase text-zinc-500">Subscription</span>
+          <div class="flex-1 h-px bg-zinc-800"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="subscription_type">Subscription Type</label>
+            <div class="relative">
+              <select id="subscription_type" name="subscription_type" required
+                class="w-full bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 outline-none focus:border-red-500 transition-colors cursor-pointer">
+                <option value="" disabled selected>Select...</option>
+                <option>Basic</option>
+                <option>Standard</option>
+                <option>Premium</option>
+              </select>
+              <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none">▾</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="monthly_fee">Monthly Fee (USD)</label>
+            <input type="number" id="monthly_fee" name="monthly_fee" min="8.99" max="17.99" step="0.01" placeholder="8.99 – 17.99" required
+              class="bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-red-500 transition-colors" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="payment_method">Payment Method</label>
+            <div class="relative">
+              <select id="payment_method" name="payment_method" required
+                class="w-full bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 outline-none focus:border-red-500 transition-colors cursor-pointer">
+                <option value="" disabled selected>Select...</option>
+                <option>Credit Card</option>
+                <option>Debit Card</option>
+                <option>PayPal</option>
+                <option>Crypto</option>
+                <option>Gift Card</option>
+              </select>
+              <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none">▾</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="number_of_profiles">Number of Profiles</label>
+            <input type="number" id="number_of_profiles" name="number_of_profiles" min="1" max="5" placeholder="1 – 5" required
+              class="bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-red-500 transition-colors" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Engagement -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-xs tracking-widest uppercase text-zinc-500">Engagement</span>
+          <div class="flex-1 h-px bg-zinc-800"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="watch_hours">Total Watch Hours</label>
+            <input type="number" id="watch_hours" name="watch_hours" min="0.01" max="110.4" step="0.01" placeholder="0.01 – 110.4" required
+              class="bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-red-500 transition-colors" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="avg_watch_time_per_day">Avg. Watch Time / Day (hrs)</label>
+            <input type="number" id="avg_watch_time_per_day" name="avg_watch_time_per_day" min="0" step="0.01" placeholder="e.g. 2.5" required
+              class="bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-red-500 transition-colors" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="last_login_days">Days Since Last Login</label>
+            <input type="number" id="last_login_days" name="last_login_days" min="0" placeholder="e.g. 14" required
+              class="bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-red-500 transition-colors" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="favorite_genre">Favorite Genre</label>
+            <div class="relative">
+              <select id="favorite_genre" name="favorite_genre" required
+                class="w-full bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 outline-none focus:border-red-500 transition-colors cursor-pointer">
+                <option value="" disabled selected>Select...</option>
+                <option>Action</option>
+                <option>Comedy</option>
+                <option>Drama</option>
+                <option>Documentary</option>
+                <option>Horror</option>
+                <option>Romance</option>
+                <option>Sci-Fi</option>
+              </select>
+              <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Location & Device -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-xs tracking-widest uppercase text-zinc-500">Location & Device</span>
+          <div class="flex-1 h-px bg-zinc-800"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="region">Region</label>
+            <div class="relative">
+              <select id="region" name="region" required
+                class="w-full bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 outline-none focus:border-red-500 transition-colors cursor-pointer">
+                <option value="" disabled selected>Select...</option>
+                <option>Africa</option>
+                <option>Asia</option>
+                <option>Europe</option>
+                <option>North America</option>
+                <option>Oceania</option>
+                <option>South America</option>
+              </select>
+              <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none">▾</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs tracking-wider uppercase text-zinc-500" for="device">Primary Device</label>
+            <div class="relative">
+              <select id="device" name="device" required
+                class="w-full bg-zinc-900 border border-zinc-800 rounded-md px-3.5 py-3 text-sm text-zinc-100 outline-none focus:border-red-500 transition-colors cursor-pointer">
+                <option value="" disabled selected>Select...</option>
+                <option>Desktop</option>
+                <option>Laptop</option>
+                <option>Mobile</option>
+                <option>TV</option>
+                <option>Tablet</option>
+              </select>
+              <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Churn Label -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-xs tracking-widest uppercase text-zinc-500">Churn Label</span>
+          <div class="flex-1 h-px bg-zinc-800"></div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="text-xs tracking-wider uppercase text-zinc-500">Churned?</label>
+          <div class="flex gap-3">
+            <label class="flex-1 cursor-pointer">
+              <input type="radio" name="churned" value="0" class="peer sr-only" required />
+              <div class="peer-checked:border-red-500 peer-checked:text-red-400 border border-zinc-800 bg-zinc-900 rounded-md py-3 text-center text-xs tracking-widest uppercase text-zinc-500 transition-all">
+                No (0)
+              </div>
+            </label>
+            <label class="flex-1 cursor-pointer">
+              <input type="radio" name="churned" value="1" class="peer sr-only" />
+              <div class="peer-checked:border-red-500 peer-checked:text-red-400 border border-zinc-800 bg-zinc-900 rounded-md py-3 text-center text-xs tracking-widest uppercase text-zinc-500 transition-all">
+                Yes (1)
+              </div>
+            </label>
+          </div>
+          <p class="text-xs text-zinc-600">Whether this customer has churned from the service.</p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3 pt-2">
+        <button type="submit"
+          style="font-family:'Syne',sans-serif;"
+          class="flex-1 bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold text-sm tracking-wide py-4 rounded-md transition-all">
+          Submit Record
+        </button>
+        <button type="reset" id="resetBtn"
+          class="border border-zinc-800 hover:border-zinc-600 text-zinc-500 hover:text-zinc-300 text-xs tracking-widest uppercase px-5 py-4 rounded-md transition-all">
+          Clear
+        </button>
+      </div>
+    </form>
+
+    <!-- JSON Output -->
+    <div id="output" class="hidden mt-6 border border-red-500 rounded-md p-5">
+      <h3 class="text-xs tracking-widest uppercase text-red-400 mb-3">Collected Data (JSON)</h3>
+      <pre id="outputPre" class="text-xs text-zinc-300 leading-relaxed whitespace-pre-wrap break-all"></pre>
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById('churnForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const fd = new FormData(this);
+      const data = {};
+      const numFields = ['age','watch_hours','last_login_days','monthly_fee','number_of_profiles','avg_watch_time_per_day','churned'];
+      for (const [k, v] of fd.entries()) {
+        data[k] = numFields.includes(k) ? Number(v) : v;
+      }
+      const out = document.getElementById('output');
+      document.getElementById('outputPre').textContent = JSON.stringify(data, null, 2);
+      out.classList.remove('hidden');
+      out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      document.getElementById('output').classList.add('hidden');
+    });
+
+
+
+    const userInput = {
+        age                 : parseInt( document
+            .getElementById('age').value
+        ),
+
+        gender              : document    
+            .getElementById('gender').value
+        ,
+
+        region              : document   
+            .getElementById('region').value
+        ,
+
+        subscription_type   : document
+            .getElementById('subscription_type').value
+        ,
+
+        watch_hours         : parseFloat ( document
+            .getElementById(' watch_hours').value
+        ),
+
+        last_login_days     :parseFloat  ( document
+            .getElementById('last_login_days').value
+        ),
+
+        device              : document
+            .getElementById('device').value
+        ,
+
+        monthly_fee         :parseFloat (document
+            .getElementById('monthly_fee').value
+        ),
+
+        payment_method      : document
+            .getElementById('payment_method').value,
+
+        number_of_profiles  : document
+            .getElementById('number_of_profiles').value
+        ,
+
+        avg_watch_time_per_day: parseFloat (document
+            .getElementById(avg_watch_time_per_day).value
+        ),
+
+        favorite_genre      : document
+            .getElementById('favorite_genre').value,
+        
+    }
+  </script>
+</body>
+</html>
