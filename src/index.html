@@ -317,9 +317,9 @@
         payment_method      : document
             .getElementById('payment_method').value,
 
-        number_of_profiles  : document
+        number_of_profiles  :parseInt (document
             .getElementById('number_of_profiles').value
-        ,
+        ),
 
         avg_watch_time_per_day: parseFloat (document
             .getElementById(avg_watch_time_per_day).value
