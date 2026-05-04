@@ -1,12 +1,11 @@
 import joblib
 import pandas as pd
-from fastapi import FastAPI
+from flask import Flask, request, jsonify, render_template
 
-app = FastAPI()
+model=joblib.load('../models/Trained_Dec_tree.pkl')
+app = Flask(__name__)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+
 
 
